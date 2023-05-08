@@ -1,19 +1,9 @@
 import { Button } from 'zarm';
-import "./home.less"
+import "./data.less"
 import { useEffect } from 'react';
-import { test } from '../api/index';
 
-
-function Home() {
+function Data() {
   useEffect(() => {
-    test()
-    .then(res => {
-      console.log(res)
-    })
-    .catch(err => {
-      console.log(err, 'error')
-    }
-    , [])
   })
   return (
     <>
@@ -24,4 +14,4 @@ function Home() {
   )
 }
 
-export default Home
+export default Data

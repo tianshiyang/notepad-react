@@ -5,11 +5,15 @@ import lazyLoad from '@/utils/lazyLoad';
 
 const rootRouter: RouteObject[] = [
   {
-    path: '/about',
-    element: lazyLoad(React.lazy(() => import('@/views/about')))
+    path: '/',
+    element: lazyLoad(React.lazy(() => import('@/views/bill/bill')))
+  },
+  {
+    path: '/user',
+    element: lazyLoad(React.lazy(() => import('@/views/user/user')))
   }, {
-    path: "/home",
-    element: lazyLoad(React.lazy(() => import("@/views/home")))
+    path: "/data",
+    element: lazyLoad(React.lazy(() => import('@/views/data/data')))
   }
 ]
 
