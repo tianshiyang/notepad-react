@@ -14,6 +14,9 @@ const rootRouter: RouteObject[] = [
   }, {
     path: "/data",
     element: lazyLoad(React.lazy(() => import('@/views/data/data')))
+  }, {
+    path: "/login",
+    element: lazyLoad(React.lazy(() => import('@/views/login/Login')))
   }
 ]
 
