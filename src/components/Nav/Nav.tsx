@@ -1,6 +1,7 @@
 import { Icon, TabBar} from 'zarm'
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import "./Nav.less"
 
 const TabIcon = Icon.createFromIconfont(
   '//at.alicdn.com/t/font_2236655_w1mpqp7n1ni.js',
@@ -21,7 +22,7 @@ function Nav() {
 
   return (
     <>
-      <TabBar activeKey={activeKey} onChange={ handleTabbarChange }>
+      <TabBar activeKey={activeKey} className='content' onChange={ handleTabbarChange }>
         <TabBar.Item 
           itemKey="/" 
           title="账单" 
