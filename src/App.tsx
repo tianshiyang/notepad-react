@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <ConfigProvider locale={zhCN}>
+        <ConfigProvider locale={zhCN} primaryColor={'#007fff'}>
           <Router />
         </ConfigProvider>
         <Nav />
