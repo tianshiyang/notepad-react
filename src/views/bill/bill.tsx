@@ -7,7 +7,7 @@ import { Toast } from "zarm"
 function Bill() {
   const [visible, setVisible] = useState(false)
 
-  const [payTypeId, setPayTypeId] = useState<any>('all')
+  const [payTypeId, setPayTypeId] = useState<any>('')
   const [payTypeName, setPayTypeName] = useState<any>("全部类型")
 
   const handleChoose = (pay_type_id: any, pay_type_name: any) => {

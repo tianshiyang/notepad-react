@@ -24,7 +24,7 @@ const ChooseBillType = ({ visible = false, onChoose }: { visible: boolean, onCho
     setShow(visible)
   }, [visible])
 
-  const [activeType, setActiveType] = useState('all')
+  const [activeType, setActiveType] = useState('')
 
   const handleChoose = (pay_type_id: any, pay_type_name: any) => {
     setShow(false)
@@ -67,9 +67,9 @@ const ChooseBillType = ({ visible = false, onChoose }: { visible: boolean, onCho
         <div className="popup-content">
           <div>
             <Button
-              theme={activeType === 'all' ? 'primary' : 'default'}
+              theme={activeType === '' ? 'primary' : 'default'}
               size="sm"
-              onClick={handleChooseActiveType('all', '全部类型')}>
+              onClick={handleChooseActiveType('', '全部类型')}>
               全部类型
             </Button>
           </div>
