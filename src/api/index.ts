@@ -1,8 +1,9 @@
 import request from "@/utils/axios"
 
-export function test() {
+export function loginAPI(data: { username: string, password: string }) {
   return request({
-    url: "/test",
-    method: "get"
+    url: "/user/login",
+    method: "post",
+    data
   })
 }
