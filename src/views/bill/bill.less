@@ -30,3 +30,75 @@
     }
   }
 }
+
+.card {
+  margin: 2% 5%;
+  width: 90%;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  .card-title {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px 10px 0 0 ;
+    border-bottom: #EEEEEE;
+    .date {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .amount-box {
+      display: flex;
+      .amount-item {
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+        .amout-type {
+          width: 25px;
+          height: 25px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #007fff;
+          color: #FFFFFF;
+          font-size: 14px;
+          font-weight: bold;
+          border-radius: 50%;
+        }
+        .amount-come {
+          margin-left: 8px;
+          font-weight: 500;
+          font-size: 13px;
+          color: red;
+        }
+        .amount-out {
+          margin-left: 8px;
+          font-weight: 500;
+          font-size: 13px;
+          color: green;
+        }
+      }
+    }
+  }
+}
+
+.cost-content {
+  padding: 0 20px;
+  .cost-top {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .cost-remark {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 13px;
+    font-weight: 500;
+  }
+}

@@ -74,9 +74,35 @@ function Bill() {
       </>
     )
   }
+
+  const RenderList = ({item}: {item: any}) => {
+    return(
+      <>
+        <div className="card">
+          <div className="card-title">
+            <div className="date">{item?.date}</div>
+            <div className="amount-box">
+              <div className="amount-item">
+                <div className="amout-type">{item?.pay_type === 1 ? '支' : '出'}</div>
+                <div className={item?.pay_type === 1 ? 'amount-come' : 'amount-out'}>{item?.pay_type === 1 ? '-' : '+'} ¥{item?.amount}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="cost-content">
+            <div className="cost-top">
+              <div>{item?.type?.type_name}</div>
+              <div className="cost-remark">{item?.remark}</div>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
   return (
     <>
       {renderHeader()}
+      {billList.map(item => <RenderList key={item?.id} item={item} />)}
       <ChooseBillType visible={visible} onChoose={handleChoose} />
       <ChooseDate visible={showChooseDate} onChooseDate={handleChooseDate} />
     </>
