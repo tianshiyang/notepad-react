@@ -3,6 +3,8 @@ import "./bill.less"
 import ChooseBillType from "./chooseBillType/chooseBillType"
 import { getBillListAPI } from "@/api"
 import { Toast } from "zarm"
+import ChooseDate from "./chooseDate/chooseDate"
+import moment from "moment"
 
 function Bill() {
   const [visible, setVisible] = useState(false)
@@ -22,7 +24,7 @@ function Bill() {
   const getBillList = () => {
     const params = {
       type_id: payTypeId,
-      date: '',
+      date,
       page_no: 1,
       page_size: 5
     }
@@ -33,9 +35,17 @@ function Bill() {
     })
   }
 
+  const [showChooseDate, setShowChooseDate] = useState(false)
+  const [date, setDate] = useState(moment().format("YYYY-MM"))
+
+  const handleChooseDate = (date: string) => {
+    setShowChooseDate(false)
+    setDate(date)
+  }
+
 	useEffect(() => {
 		getBillList();
-	}, [ payTypeId ]);
+	}, [ payTypeId, date ]);
   const renderHeader = () => {
     return (
       <>
@@ -56,8 +66,8 @@ function Bill() {
             <div className="screening-item" onClick={() => setVisible(true)}>
               {payTypeName}
             </div>
-            <div className="screening-item">
-              2023-05
+            <div className="screening-item" onClick={() => setShowChooseDate(true)}>
+              { date }
             </div>
           </div>
         </div>
@@ -68,6 +78,7 @@ function Bill() {
     <>
       {renderHeader()}
       <ChooseBillType visible={visible} onChoose={handleChoose} />
+      <ChooseDate visible={showChooseDate} onChooseDate={handleChooseDate} />
     </>
   )
 }
