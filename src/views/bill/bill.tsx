@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import "./bill.less"
 import ChooseBillType from "./chooseBillType/chooseBillType"
 import { getBillListAPI } from "@/api"
-import { Toast } from "zarm"
+import { Affix, Button, Toast } from "zarm"
 import ChooseDate from "./chooseDate/chooseDate"
 import moment from "moment"
+import AddBill from "./addBill/addBill"
 
 function Bill() {
   const [visible, setVisible] = useState(false)
@@ -38,10 +39,12 @@ function Bill() {
   const [showChooseDate, setShowChooseDate] = useState(false)
   const [date, setDate] = useState(moment().format("YYYY-MM"))
 
-  const handleChooseDate = (date: string) => {
+  const handleChooseDate = (value: string) => {
     setShowChooseDate(false)
-    setDate(date)
+    setDate(value)
   }
+
+  const [showAddBill, setShowAddBill] = useState(false)
 
 	useEffect(() => {
 		getBillList();
@@ -103,6 +106,10 @@ function Bill() {
     <>
       {renderHeader()}
       {billList.map(item => <RenderList key={item?.id} item={item} />)}
+      <Affix offsetBottom={20}>
+        <Button theme="primary" size="sm" onClick={() => setShowAddBill(true)}>新增</Button>
+      </Affix>
+      <AddBill showAddBill={showAddBill} emitClose={() => setShowAddBill(false)} />
       <ChooseBillType visible={visible} onChoose={handleChoose} />
       <ChooseDate visible={showChooseDate} onChooseDate={handleChooseDate} />
     </>
