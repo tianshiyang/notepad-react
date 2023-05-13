@@ -46,3 +46,27 @@ export function commitNewBillAPI(data: any) {
     data
   })
 }
+
+export function getBillDetailAPI(params: any) {
+  return request({
+    url: "/bill/get/detail",
+    method: 'get',
+    params
+  })
+}
+
+export function deleteBillAPI(data: any) {
+  return request({
+    url: "/bill/delete/order",
+    method: "post",
+    data
+  })
+}
+
+export function editBillAPI(data: any) {
+  return request({
+    url: "/bill/edit/order",
+    method: "post",
+    data
+  })
+}

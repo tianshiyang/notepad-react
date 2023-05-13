@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import ChooseDate from "../chooseDate/chooseDate"
 import moment from "moment"
 import PayType from "../payType/payType"
-import { commitNewBillAPI } from "@/api"
+import { commitNewBillAPI, editBillAPI, getBillDetailAPI } from "@/api"
 
-function AddBill({showAddBill = false, emitClose, handleAddSuccess}: {showAddBill: boolean, emitClose: () => void, handleAddSuccess: () => void}) {
+// type 1 新增 2 编辑
+function AddBill({showAddBill = false, order_id, type = 1, emitClose, handleAddSuccess}: {showAddBill: boolean, order_id?: string, type?: number, emitClose: () => void, handleAddSuccess: () => void}) {
   const [visible, setVisible] = useState(showAddBill)
   useEffect(() => {
     setVisible(showAddBill)
@@ -40,6 +41,27 @@ function AddBill({showAddBill = false, emitClose, handleAddSuccess}: {showAddBil
     setPayTypeId(value)
   }
 
+  const addBill = (params: any) => {
+    commitNewBillAPI(params).then(() => {
+      Toast.show("新增成功")
+      handleClose()
+      handleAddSuccess()
+    }).catch((error: any) => {
+      Toast.show(error.message)
+    })
+  }
+
+  const editBill = (params: any) => {
+    params.order_id = order_id
+    editBillAPI(params).then(() => {
+      Toast.show("更改成功")
+      handleClose()
+      handleAddSuccess()
+    }).catch(err => {
+      Toast.show(err.message)
+    })
+  }
+
   const [amount, setAmount] = useState("")
   const handleChangeAmount = (value: any) => {
     if (value === 'delete') {
@@ -51,17 +73,27 @@ function AddBill({showAddBill = false, emitClose, handleAddSuccess}: {showAddBil
         type_id: payTypeId,
         pay_type
       };
-      commitNewBillAPI(parmas).then(() => {
-        Toast.show("新增成功")
-        handleClose()
-        handleAddSuccess()
-      }).catch((error: any) => {
-        Toast.show(error.message)
-      })
+      if (type === 1) {
+        addBill(parmas)
+      } else {
+        editBill(parmas)
+      }
+      
     } else {
       setAmount(amount + value)
     }
   }
+
+  useEffect(() => {
+    if (order_id) {
+      getBillDetailAPI({id: order_id}).then(res => {
+        setDate(res.data.date)
+        setAmount(res.data.amount)
+        setPayType(res.data.pay_type)
+        setPayTypeId(res.data.type.type_id)
+     })
+    }
+  }, [])
   return (
     <>
     <Popup
@@ -84,7 +116,7 @@ function AddBill({showAddBill = false, emitClose, handleAddSuccess}: {showAddBil
         <div className="unit">¥</div>
         <div className="amount">{amount}</div>
       </div>
-      <PayType pay_type={pay_type} handleChoosePayId={(value) => choosePayId(value)}></PayType>
+      <PayType pay_id={payTypeId} pay_type={pay_type} handleChoosePayId={(value) => choosePayId(value)}></PayType>
       <Keyboard
         type="price"
         onKeyClick={(value) => handleChangeAmount(value)}

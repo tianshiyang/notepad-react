@@ -6,6 +6,7 @@ import { Affix, Button, Pull, Toast } from "zarm"
 import ChooseDate from "./chooseDate/chooseDate"
 import moment from "moment"
 import AddBill from "./addBill/addBill"
+import { Link } from "react-router-dom"
 
 function Bill() {
   const [visible, setVisible] = useState(false)
@@ -35,9 +36,9 @@ function Bill() {
     }
     getBillListAPI(params).then(res => {
       if (pageNo !== 1) {
-        setBillList(billList.concat(res.data.list))
+        setBillList(billList.concat(res.data))
       } else {
-        setBillList(res.data.list)
+        setBillList(res.data)
       }
       setTotal(res.data.total)
     }).catch(err => {
@@ -130,6 +131,7 @@ function Bill() {
   const RenderList = ({item}: {item: any}) => {
     return(
       <>
+      <Link to={{ pathname: `/detail/${item.id}` }}>
         <div className="card">
           <div className="card-title">
             <div className="date">{item?.date}</div>
@@ -148,6 +150,7 @@ function Bill() {
             </div>
           </div>
         </div>
+      </Link>
       </>
     )
   }

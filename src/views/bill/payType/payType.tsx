@@ -2,14 +2,17 @@ import { getPayTypeListAPI } from "@/api"
 import { useEffect, useState } from "react"
 import "./payType.less"
 
-function PayType({ pay_type, handleChoosePayId }: {pay_type: number, handleChoosePayId: (pay_id: number) => void}) {
-  const [payType, setPayType] = useState(1)
+function PayType({ pay_type, handleChoosePayId, pay_id }: {pay_type: number, handleChoosePayId: (id: number) => void, pay_id?: number}) {
   const [payTypeList, setPayTypeList] = useState<any[]>([])
+
+  useEffect(() => {
+    console.log(pay_id)
+    setActivePayId(pay_id)
+  }, [pay_id])
 
   // 获取支付方式
   useEffect(() => {
-    setPayType(pay_type)
-    getPayTypeListAPI({pay_type: payType})
+    getPayTypeListAPI({pay_type})
       .then(res => {
         setPayTypeList(res.data)
       })
