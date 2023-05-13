@@ -1,5 +1,4 @@
 import { useRoutes, RouteObject } from "react-router-dom"
-// import { RouteObject }
 import React from "react"
 import lazyLoad from '@/utils/lazyLoad';
 
@@ -19,7 +18,10 @@ const rootRouter: RouteObject[] = [
     element: lazyLoad(React.lazy(() => import('@/views/login/Login')))
   }, {
     path: "/detail/:id",
-    element: lazyLoad(React.lazy(() => import("@/views/bill/detail")))
+    element: lazyLoad(React.lazy(() => import("@/views/bill/Detail")))
+  }, {
+    path: "/editUserInfo",
+    element: lazyLoad(React.lazy(() => import('@/views/user/editUserInfo')))
   }
 ]
 

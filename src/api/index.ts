@@ -70,3 +70,18 @@ export function editBillAPI(data: any) {
     data
   })
 }
+
+export function getUserInfoAPI() {
+  return request({
+    url: "/user/get/userinfo",
+    method: "get"
+  })
+}
+
+export function updateUserInfoAPI(data: any) {
+  return request({
+    url: "/user/update/userinfo",
+    method: "post",
+    data
+  })
+}
