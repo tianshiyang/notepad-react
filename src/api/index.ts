@@ -85,3 +85,11 @@ export function updateUserInfoAPI(data: any) {
     data
   })
 }
+
+export function resetPasswordAPI(data: any) {
+  return request({
+    url: "/user/reset/password",
+    method: "post",
+    data
+  })
+}

@@ -34,7 +34,7 @@ function User() {
         <div className="user-box">
         <List>
           <List.Item hasArrow title="用户信息更改" onClick={() => navigate("/editUserInfo")} />
-          <List.Item hasArrow title="重制密码" onClick={() => {}} />
+          <List.Item hasArrow title="重制密码" onClick={() => navigate("/resetPassword")} />
         </List>
         </div>
       </div>

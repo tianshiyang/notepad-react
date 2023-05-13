@@ -22,6 +22,9 @@ const rootRouter: RouteObject[] = [
   }, {
     path: "/editUserInfo",
     element: lazyLoad(React.lazy(() => import('@/views/user/editUserInfo')))
+  }, {
+    path: "/resetPassword",
+    element: lazyLoad(React.lazy(() => import('@/views/user/resetPassword')))
   }
 ]
 
