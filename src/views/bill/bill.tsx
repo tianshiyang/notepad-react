@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "./bill.less"
 import ChooseBillType from "./chooseBillType/chooseBillType"
 import { getBillListAPI } from "@/api"
-import { Affix, Button, Toast } from "zarm"
+import { Affix, Button, Pull, Toast } from "zarm"
 import ChooseDate from "./chooseDate/chooseDate"
 import moment from "moment"
 import AddBill from "./addBill/addBill"
@@ -12,8 +12,12 @@ function Bill() {
 
   const [payTypeId, setPayTypeId] = useState<any>('')
   const [payTypeName, setPayTypeName] = useState<any>("全部类型")
+  const [pageNo, setPageNo] = useState(1)
+  const [total, setTotal] = useState<any>(0)
 
   const handleChoose = (pay_type_id: any, pay_type_name: any) => {
+    setPageNo(1)
+    setTotal(0)
     setPayTypeId(pay_type_id)
     setPayTypeName(pay_type_name)
     setVisible(false)
@@ -26,11 +30,16 @@ function Bill() {
     const params = {
       type_id: payTypeId,
       date,
-      page_no: 1,
+      page_no: pageNo,
       page_size: 5
     }
     getBillListAPI(params).then(res => {
-      setBillList(res.data)
+      if (pageNo !== 1) {
+        setBillList(billList.concat(res.data.list))
+      } else {
+        setBillList(res.data.list)
+      }
+      setTotal(res.data.total)
     }).catch(err => {
       Toast.show(err.message)
     })
@@ -40,13 +49,17 @@ function Bill() {
   const [date, setDate] = useState(moment().format("YYYY-MM"))
 
   const handleChooseDate = (value: string) => {
+    setPageNo(1)
+    setTotal(0)
     setShowChooseDate(false)
-    setDate(value)
+    setDate(moment(value).format("YYYY-MM"))
   }
 
   const [showAddBill, setShowAddBill] = useState(false)
 
 	useEffect(() => {
+    setPageNo(1)
+    setTotal(0)
 		getBillList();
 	}, [ payTypeId, date ]);
   const renderHeader = () => {
@@ -78,6 +91,42 @@ function Bill() {
     )
   }
 
+  const REFRESH_STATE = {
+    normal: 0, // 普通
+    pull: 1, // 下拉刷新（未满足刷新条件）
+    drop: 2, // 释放立即刷新（满足刷新条件）
+    loading: 3, // 加载中
+    success: 4, // 加载成功
+    failure: 5, // 加载失败
+  };
+  
+  const LOAD_STATE = {
+    normal: 0, // 普通
+    abort: 1, // 中止
+    loading: 2, // 加载中
+    success: 3, // 加载成功
+    failure: 4, // 加载失败
+    complete: 5, // 加载完成（无新数据）
+  };
+
+  const pullRef = useRef<any>()
+  const [refreshing, setRefreshing] = useState(REFRESH_STATE.normal)
+  const [loading, setLoading] = useState(LOAD_STATE.normal);
+  // 上拉刷新
+  const refreshData = () => {
+    setPageNo(1)
+    setRefreshing(REFRESH_STATE.loading)
+    getBillList()
+    setRefreshing(REFRESH_STATE.success)
+  }
+
+  const loadData = () => {
+    setPageNo(pageNo + 1)
+    setLoading(LOAD_STATE.loading);
+    getBillList()
+    setLoading(LOAD_STATE.success)
+  };
+
   const RenderList = ({item}: {item: any}) => {
     return(
       <>
@@ -105,11 +154,25 @@ function Bill() {
   return (
     <>
       {renderHeader()}
-      {billList.map(item => <RenderList key={item?.id} item={item} />)}
+      <Pull
+        ref={pullRef}
+        style={{ overflowY: 'auto', maxHeight: 400 }}
+        refresh={{
+          state: refreshing,
+          handler: refreshData,
+        }}
+        load={{
+          state: loading,
+          distance: 200,
+          handler: loadData,
+        }}
+        >
+        {billList.map(item => <RenderList key={item?.id} item={item} />)}
+      </Pull>
       <Affix offsetBottom={20}>
         <Button theme="primary" size="sm" onClick={() => setShowAddBill(true)}>新增</Button>
       </Affix>
-      <AddBill showAddBill={showAddBill} emitClose={() => setShowAddBill(false)} />
+      <AddBill showAddBill={showAddBill} emitClose={() => setShowAddBill(false)} handleAddSuccess={getBillList} />
       <ChooseBillType visible={visible} onChoose={handleChoose} />
       <ChooseDate visible={showChooseDate} onChooseDate={handleChooseDate} />
     </>

@@ -30,3 +30,19 @@ export function getBillListAPI(params: { type_id: string | number, date: string,
     params
   })
 }
+
+export function getPayTypeListAPI(params: { pay_type: number }): Promise<{ data: any[], code: number }> {
+  return request({
+    url: "/type/get/types",
+    method: "get",
+    params
+  })
+}
+
+export function commitNewBillAPI(data: any) {
+  return request({
+    url: "/bill/add",
+    method: "post",
+    data
+  })
+}
